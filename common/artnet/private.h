@@ -22,6 +22,10 @@
 #  include <config.h>
 #endif
 
+#define NOMINMAX 1
+
+#include <algorithm>
+
 #ifndef WIN32
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -87,13 +91,13 @@ extern uint16_t HIGH_BYTE;
 #define SA struct sockaddr
 #define SI struct in_addr
 
-#ifndef min
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#endif
+//#ifndef min
+//#define min(a, b) ((a) < (b) ? (a) : (b))
+//#endif
 
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#endif
+//#ifndef max
+//#define max(a, b) ((a) > (b) ? (a) : (b))
+//#endif
 
 #ifndef INVALID_SOCKET
 #define INVALID_SOCKET -1

@@ -179,7 +179,7 @@ int artnet_tx_tod_data( node n, int id )
 
 	while( remaining > 0 )
 	{
-		lim = min( ARTNET_MAX_UID_COUNT, remaining );
+		lim = std::min<int>( ARTNET_MAX_UID_COUNT, remaining );
 		tod.data.toddata.blockCount = bloc++;
 		tod.data.toddata.uidCount = lim;
 
@@ -248,7 +248,7 @@ int artnet_tx_rdm( node n, uint8_t address, uint8_t *data, int length )
 	rdm.data.rdm.cmd = 0x00;
 	rdm.data.rdm.address = address;
 
-	len = min( length, ARTNET_MAX_RDM_DATA );
+	len = std::min<int>( length, ARTNET_MAX_RDM_DATA );
 	memcpy( &rdm.data.rdm.data, data, len );
 	return artnet_net_send( n, &rdm );
 
@@ -299,7 +299,7 @@ int artnet_tx_firmware_packet( node n, firmware_transfer_t *firm )
 
 	// calculate length
 	data_len = firm->bytes_total - firm->bytes_current;
-	data_len = min( data_len, max_len );
+	data_len = std::min<int>( data_len, max_len );
 
 	// work out type - 6 cases
 	if( firm->ubea )

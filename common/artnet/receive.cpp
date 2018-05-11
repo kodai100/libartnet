@@ -20,7 +20,6 @@
 
 #include "stdafx.h"
 
-
 #include "private.h"
 
 uint8_t _make_addr( uint8_t subnet, uint8_t addr );
@@ -107,7 +106,7 @@ void handle_dmx( node n, artnet_packet p )
 
 	data_length = (int)bytes_to_short( p->data.admx.lengthHi,
 		p->data.admx.length );
-	data_length = min( data_length, ARTNET_DMX_LENGTH );
+	data_length = std::min<int>( data_length, ARTNET_DMX_LENGTH );
 
 	// find matching output ports
 	for( i = 0; i < ARTNET_MAX_PORTS; i++ )
@@ -444,7 +443,7 @@ int _artnet_handle_input( node n, artnet_packet p )
 	if( n->state.node_type != ARTNET_NODE && n->state.node_type != ARTNET_MSRV )
 		return ARTNET_EOK;
 
-	ports = min( p->data.ainput.numbports, ARTNET_MAX_PORTS );
+	ports = std::min<int>( p->data.ainput.numbports, ARTNET_MAX_PORTS );
 	for( i = 0; i < ports; i++ )
 	{
 		if( p->data.ainput.input[ i ] & PORT_DISABLE_MASK )
@@ -481,7 +480,7 @@ int handle_tod_request( node n, artnet_packet p )
 		return ARTNET_EOK;
 
 	// limit to 32
-	limit = min( ARTNET_MAX_RDM_ADCOUNT, p->data.todreq.adCount );
+	limit = std::min<int>( ARTNET_MAX_RDM_ADCOUNT, p->data.todreq.adCount );
 
 	// this should always be true
 	if( p->data.todreq.command == 0x00 )
@@ -634,7 +633,7 @@ int handle_firmware( node n, artnet_packet p )
 				n->firmware.ubea = 1;
 
 			// take the minimum of the total length and the max packet size
-			block_length = min( (unsigned int)length, ARTNET_FIRMWARE_SIZE *
+			block_length = std::min<int>(length, ARTNET_FIRMWARE_SIZE *
 				sizeof( p->data.firmware.data[ 0 ] ) );
 
 			memcpy( n->firmware.data, p->data.firmware.data, block_length );
@@ -1008,7 +1007,7 @@ void merge( node n, int port_id, int length, uint8_t *latest )
 	if( port->merge_mode == ARTNET_MERGE_HTP )
 	{
 		for( i = 0; i < length; i++ )
-			port->data[ i ] = max( port->dataA[ i ], port->dataB[ i ] );
+			port->data[ i ] = std::max<uint8_t>( port->dataA[ i ], port->dataB[ i ] );
 	}
 	else
 	{
