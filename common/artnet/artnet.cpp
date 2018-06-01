@@ -652,7 +652,7 @@ int artnet_send_poll_reply_resolume( artnet_node vn, uint8_t subnet, DmxPortStat
 	}
 
 	sprintf( (char *)&reply.data.ar.nodereport,
-		"%04hx [%04i] libartnet",
+		"%04x [%04i] libartnet",
 		n->state.report_code,
 		n->state.ar_count );
 
@@ -1511,8 +1511,8 @@ int artnet_dump_config( artnet_node vn )
 	printf( "Node Type: %i\n", n->state.node_type );
 	printf( "Short Name: %s\n", n->state.short_name );
 	printf( "Long Name: %s\n", n->state.long_name );
-	printf( "Subnet: %#hx\n", n->state.subnet );
-	printf( "Default Subnet: %#hx\n", n->state.default_subnet );
+	printf( "Subnet: %#x\n", n->state.subnet );
+	printf( "Default Subnet: %#x\n", n->state.default_subnet );
 	printf( "Net Ctl: %i\n", n->state.subnet_net_ctl );
 	printf( "#####################\n" );
 

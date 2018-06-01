@@ -59,6 +59,13 @@ LPFN_WSASENDMSG WSASendMSG = NULL;
 #include <linux/if_packet.h>
 #endif
 
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 #include <functional>
 #include <algorithm>
 #include <string>
@@ -925,7 +932,7 @@ int artnet_net_recv( node n, artnet_packet p, int delay )
 	  return ARTNET_EOK;
 	}
 	*/
-	p->length = len;
+	p->length = (int)len;
 	memcpy( &(p->from), &cliAddr.sin_addr, sizeof( struct in_addr ) );
 	// should set to in here if we need it
 	return ARTNET_EOK;
@@ -1069,8 +1076,9 @@ int artnet_net_send( node n, artnet_packet p )
 
 	bool valid_target = localhost_selected ? *reinterpret_cast< uint8_t* >( &addr.sin_addr.s_addr ) == 127 : true;
 	if( valid_target )
-		ret = sendmsg( n->sd, &msgh, 0 );
-
+		ret = (int)sendmsg( n->sd, &msgh, 0 );
+	else
+		ret = -1;
 #endif
 
 	if( ret == -1 )
